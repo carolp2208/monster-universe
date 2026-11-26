@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#020302" />
+  <title>MONSTER UNIVERSE // CYBER_OS 404</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,600;0,700;1,700&family=Orbitron:wght@600;700;800;900&family=Rubik+Glitch&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- CAMADA 1: CHUVA DE CÓDIGO EM TEMPO REAL -->
+  <canvas id="matrix-bg" class="matrix-canvas" aria-hidden="true"></canvas>
+
+  <!-- CAMADA 2: SCANLINES CRT & VINHETA SUBTIL -->
+  <div class="crt-overlay" aria-hidden="true"></div>
+  <div class="glitch-flash-layer" id="glitch-flash" aria-hidden="true"></div>
+
+  <!-- CAMADA 3: MOLDURA HUD CYBERPUNK FIXA NO ECRÃ -->
+  <svg class="screen-hud-frame" viewBox="0 0 430 860" preserveAspectRatio="none" aria-hidden="true">
+    <path
+      d="M 36 8 L 142 8 L 154 14 L 276 14 L 288 8 L 394 8 L 422 36 L 422 160 L 416 172 L 416 688 L 422 700 L 422 824 L 394 852 L 288 852 L 276 846 L 154 846 L 142 852 L 36 852 L 8 824 L 8 700 L 14 688 L 14 172 L 8 160 L 8 36 Z"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    />
+    <g fill="currentColor">
+      <polygon points="7,310 15,320 15,330 7,320" />
+      <polygon points="7,334 15,344 15,354 7,344" />
+      <polygon points="7,358 15,368 15,378 7,368" />
+      <polygon points="423,310 415,320 415,330 423,320" />
+      <polygon points="423,334 415,344 415,354 423,344" />
+      <polygon points="423,358 415,368 415,378 423,368" />
+    </g>
+  </svg>
+
+  <!-- CAMADA 4: FAIXA SUPERIOR DE ERRO DO SISTEMA + TICKER DE CÓDIGO -->
+  <header class="sys-alert-bar" id="sys-alert-bar">
+    <div class="alert-status">
+      <span class="pulse-square"></span>
+      <span id="err-code" class="err-code">[ERR_0x404_BREACH]</span>
+    </div>
+    <div class="ticker-wrap">
+      <div id="code-ticker" class="code-ticker">
+        0x7F9A_MEM_DUMP // FIREWALL_COMPROMISED // INJECTING_MONSTER_PAYLOAD // SYS_ERR_404 // OVERRIDE_ACTIVE //
+      </div>
+    </div>
+    <button type="button" id="glitch-trigger-btn" class="mini-hack-btn" title="Forcar pulso glitch">GLITCH</button>
+  </header>
+
+  <!-- POP-UP FLUTUANTE INTERATIVO DE ERRO CRÍTICO -->
+  <div id="error-popup" class="error-popup hidden" role="alert">
+    <div class="error-popup-header">
+      <span id="popup-err-title">[CRITICAL_ERR // 0x99F]</span>
+      <button type="button" id="close-err-popup" class="popup-x">X</button>
+    </div>
+    <p id="popup-err-body" class="error-popup-body">
+      FUGA DE ENERGIA DETETADA NO SETOR NITRO. INTERCETA O SINAL PARA RECUPERAR CELULAS.
+    </p>
+    <div class="error-popup-actions">
+      <button type="button" id="intercept-err-btn" class="btn-intercept">&gt; INTERCETAR (+15 PWR)</button>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       PARTE 1: PÁGINA INTRODUTÓRIA CYBERPUNK (OBJETIVO & FUNÇÕES)
+       ========================================================= -->
+  <section id="intro-screen" class="intro-screen active">
+    <div class="intro-container">
+
+      <div class="terminal-header-strip">
+        <span>ROOT@MONSTER_OS:~# ./BREACH_404.BIN</span>
+        <span id="live-clock" class="mono-accent">00:00:00</span>
+      </div>
+
+      <div class="hero-box hud-cut">
+        <div class="hero-404-bg" aria-hidden="true">404</div>
+        <img src="Grafic_elements.pngs/monster-logo.png" alt="Monster Universe" class="intro-logo" onerror="this.style.display='none'" />
+        <div class="status-pill">ACESSO NAO AUTORIZADO // PROTOCOLO ATIVO</div>
+        <h1 class="glitch-headline" data-text="MONSTER UNIVERSE">MONSTER UNIVERSE</h1>
+        <p class="hero-lead">
+          &gt; Terminal mobile-first infiltrado na rede Monster Energy para desencriptar os agentes secretos por tras de cada lata.
+        </p>
+      </div>
+
+      <!-- Consola Viva -->
+      <div class="cyber-console hud-cut">
+        <div class="cyber-console-bar">
+          <span>[LIVE_KERNEL_STREAM]</span>
+          <span class="blink-text">REC</span>
+        </div>
+        <div id="console-stream" class="cyber-console-body"></div>
+      </div>
+
+      <!-- Bloco: Objetivo do Website -->
+      <article class="cyber-panel hud-cut">
+        <div class="panel-tag">00 // OBJETIVO_DO_WEBSITE</div>
+        <p class="panel-text">
+          Converter o universo visual da marca numa plataforma interativa de colecionismo digital. Aqui, cada utilizador quebra a encriptacao de capsulas energeticas para revelar identidades, estatisticas taticas e fichas de personagem completas no telemovel.
+        </p>
+      </article>
+
+      <!-- Bloco: O que o website faz -->
+      <div class="modules-stack">
+        <div class="panel-tag">01 // O_QUE_PODES_FAZER_AQUI</div>
+
+        <div class="module-card hud-cut">
+          <div class="module-id">MOD_01</div>
+          <div class="module-content">
+            <h3>DESENCRIPTAR CAPSULAS GACHA</h3>
+            <p>Consome celulas PWR para forcar a abertura de capsulas e extrair agentes aleatorios com animacao de quebra de sistema.</p>
+          </div>
+        </div>
+
+        <div class="module-card hud-cut">
+          <div class="module-id">MOD_02</div>
+          <div class="module-content">
+            <h3>FICHA DE AGENTE INTERATIVA</h3>
+            <p>Analisa os atributos HP, ATK, DEF e SPD em barras segmentadas, habilidades especiais, emblemas e arte completa.</p>
+          </div>
+        </div>
+
+        <div class="module-card hud-cut">
+          <div class="module-id">MOD_03</div>
+          <div class="module-content">
+            <h3>BASE DE DADOS &amp; CRIADOR DE AGENTE</h3>
+            <p>Desbloqueia os 6 operacionais principais (Rayssa, Rosie, Kabo, Kira, Jax e Mateo) e acede ao terminal de criacao.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="intro-cta">
+        <button type="button" id="enter-app-btn" class="btn-cyber-primary">
+          <span>[ EXECUTAR_SISTEMA // ENTRAR ]</span>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       PARTE 2: APLICAÇÃO PRINCIPAL (TERMINAL GACHA, ARQUIVO, CRIADOR)
+       ========================================================= -->
+  <div id="main-app" class="main-app hidden">
+
+    <!-- Barra Superior -->
+    <div class="app-topbar">
+      <button type="button" id="back-intro-btn" class="brand-link" title="Voltar a pagina introdutoria">
+        <span class="gt">&gt;_</span> MONSTER_OS
+      </button>
+      <div class="topbar-controls">
+        <button type="button" id="audio-toggle-btn" class="hud-chip-btn">SFX: ON</button>
+        <button type="button" id="info-btn" class="hud-chip-btn">OBJETIVO</button>
+        <div class="pwr-meter">
+          <span class="pwr-label">PWR</span>
+          <span id="energy-count" class="pwr-val">100</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ecrãs Internos -->
+    <main class="app-stage">
+
+      <!-- VISTA 1: CAPSULA GACHA -->
+      <section id="view-pack" class="view active">
+        <div class="telemetry-bar hud-cut">
+          <span>SECTOR: COV_404</span>
+          <span id="hex-stream">MEM: 0x8A2F</span>
+          <span>SYNC: 99.8%</span>
+        </div>
+
+        <div class="capsule-zone">
+          <div class="capsule-card hud-cut" id="pack-trigger">
+            <div class="capsule-grid-bg"></div>
+            <div class="capsule-glow-orb"></div>
+            <div class="capsule-laser" id="capsule-laser"></div>
+            <div class="capsule-inner">
+              <span class="capsule-code">[ CAPSULA_ENCRIPTADA // V.04 ]</span>
+              <img src="Grafic_elements.pngs/monster-logo.png" alt="" class="capsule-logo" onerror="this.style.display='none'" />
+              <h2 class="capsule-title glitch-headline" data-text="MONSTER PACK">MONSTER PACK</h2>
+              <div id="decrypt-progress-wrap" class="decrypt-progress-wrap hidden">
+                <div class="decrypt-bar"><div id="decrypt-fill" class="decrypt-fill"></div></div>
+                <span id="decrypt-status" class="decrypt-status">A QUEBRAR FIREWALL... 0%</span>
+              </div>
+              <p id="pack-hint" class="capsule-hint">&gt; TOCA PARA INICIAR EXTRACAO</p>
+            </div>
+          </div>
+
+          <div class="capsule-actions">
+            <button type="button" id="open-pack-btn" class="btn-cyber-primary">
+              DESENCRIPTAR CAPSULA (-20 PWR)
+            </button>
+            <button type="button" id="recharge-btn" class="btn-cyber-outline hidden">
+              [ OVERCLOCK // INJETAR +100 PWR ]
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- VISTA 2: ARQUIVO DE AGENTES (ROSTER) -->
+      <section id="view-roster" class="view">
+        <div class="view-header">
+          <h2>// YOUR_CHARACTERS</h2>
+          <span id="collection-progress" class="badge-count">0 / 6</span>
+        </div>
+        <div id="roster-grid" class="roster-grid"></div>
+      </section>
+
+      <!-- VISTA 3: CRIADOR DE AGENTE CUSTOM -->
+      <section id="view-creator" class="view">
+        <div class="view-header">
+          <h2>// CRIADOR_DE_IDENTIDADE</h2>
+          <span id="creator-lock-tag" class="badge-count">BLOQUEADO</span>
+        </div>
+
+        <div id="creator-locked-msg" class="cyber-panel hud-cut">
+          <div class="panel-tag">[ERR_ACCESS_DENIED]</div>
+          <p class="panel-text">
+            Desbloqueia todos os 6 agentes originais na Base de Dados para obteres permissao de administrador e criares o teu proprio agente Monster Universe.
+          </p>
+        </div>
+
+        <form id="creator-form" class="creator-form hud-cut hidden">
+          <div class="form-group">
+            <label for="custom-name">CODINOME DO AGENTE</label>
+            <input type="text" id="custom-name" maxlength="14" placeholder="EX: VIPER_09" required />
+          </div>
+          <div class="form-group">
+            <label for="custom-title">TITULO / ALCUNHA</label>
+            <input type="text" id="custom-title" maxlength="24" placeholder="EX: THE NEON PHANTOM" required />
+          </div>
+          <div class="form-group">
+            <label for="custom-flavor">FORMULA / SABOR</label>
+            <select id="custom-flavor">
+              <option value="NITRO">NITRO // SUPER DRY</option>
+              <option value="ULTRA">ULTRA // ZERO</option>
+              <option value="ORIGINAL">ORIGINAL // GREEN</option>
+              <option value="PUNCH">PUNCH // KHAOTIC</option>
+              <option value="ASSAULT">ASSAULT // TACTICAL</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="custom-ability">SPECIAL ABILITY</label>
+            <input type="text" id="custom-ability" maxlength="22" placeholder="EX: CYBER OVERDRIVE" required />
+          </div>
+          <div class="form-group">
+            <label for="custom-desc">DESCRICAO DA HABILIDADE</label>
+            <input type="text" id="custom-desc" maxlength="68" placeholder="EX: AUMENTA A VELOCIDADE E O DANO CRITICO." required />
+          </div>
+          <div class="form-group">
+            <label for="custom-image-input">IMAGEM DO AGENTE (OPCIONAL)</label>
+            <input type="file" id="custom-image-input" accept="image/png, image/jpeg, image/webp" class="hidden" />
+            <div id="image-upload-zone" class="image-upload-zone" role="button" tabindex="0" aria-label="Carregar imagem do agente">
+              <div id="image-upload-placeholder" class="upload-placeholder">
+                <span class="upload-plus">[ + ]</span>
+                <span class="upload-title">SELECIONAR OU ARRASTAR IMAGEM</span>
+                <span class="upload-sub">PNG TRANSPARENTE, JPG OU WEBP</span>
+              </div>
+              <div id="image-preview-wrap" class="image-preview-wrap hidden">
+                <img id="custom-image-preview" src="" alt="Pre-visualizacao do agente" />
+                <div class="preview-meta">
+                  <span id="custom-image-name" class="preview-filename">AGENTE.PNG</span>
+                  <button type="button" id="remove-custom-img-btn" class="btn-remove-img">[ REMOVER ]</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn-cyber-primary">[ COMPILAR E GUARDAR AGENTE ]</button>
+        </form>
+      </section>
+
+    </main>
+
+    <!-- Navegação Inferior Mobile -->
+    <nav class="bottom-nav">
+      <button type="button" class="nav-btn active" data-target="view-pack">CAPSULA</button>
+      <button type="button" class="nav-btn" data-target="view-roster">AGENTES</button>
+      <button type="button" class="nav-btn" data-target="view-creator">CRIAR</button>
+    </nav>
+
+  </div>
+
+  <!-- =========================================================
+       MODAL: PAINEL DE PERSONAGEM (SHOWCASE PREMIUM)
+       ========================================================= -->
+  <div id="card-modal" class="modal hidden">
+    <div class="modal-backdrop" id="close-modal"></div>
+
+    <div class="dossier-wrapper">
+      <div id="inspect-card" class="character-dossier">
+        <!-- Efeitos Atmosféricos e Holográficos -->
+        <div class="dossier-bg-grid" aria-hidden="true"></div>
+        <div class="dossier-aura" aria-hidden="true"></div>
+        <div class="dossier-watermark" id="card-watermark" aria-hidden="true">#01</div>
+        <div class="holo-sheen" id="holo-sheen" aria-hidden="true"></div>
+
+        <!-- Barra Superior do Painel -->
+        <div class="dossier-topbar">
+          <button type="button" id="dossier-roster-btn" class="dossier-pill-btn">
+            <span class="pill-dot"></span>
+            <span>YOUR CHARACTERS</span>
+          </button>
+
+          <div class="dossier-top-icons">
+            <button type="button" id="dossier-prev-btn" class="dossier-circle-btn" title="Agente anterior" aria-label="Anterior">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+            <button type="button" id="dossier-next-btn" class="dossier-circle-btn" title="Proximo agente" aria-label="Proximo">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+            <button type="button" id="dossier-home-btn" class="dossier-circle-btn dossier-close-btn" title="Fechar painel" aria-label="Fechar">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Secção Hero: Identidade à Esquerda + Personagem em Destaque à Direita -->
+        <div class="dossier-hero">
+          <div class="dossier-hero-info">
+            <div class="flavor-chip">
+              <span id="card-code">#01</span>
+              <span class="chip-sep">//</span>
+              <span id="card-flavor">RIO PUNCH</span>
+            </div>
+
+            <h2 id="card-name" class="dossier-name">RAYSSA</h2>
+            <p id="card-title" class="dossier-subtitle">THE CARNAVAL QUEEN</p>
+
+            <div class="level-row">
+              <span class="level-pill">LV. <strong id="card-level">01</strong></span>
+              <span class="tier-tag">ELITE AGENT</span>
+            </div>
+
+            <div class="catchphrase-banner">
+              <span class="quote-bar"></span>
+              <p id="card-catchphrase" class="catchphrase-text">"LET'S DANCE?"</p>
+            </div>
+          </div>
+
+          <div class="dossier-hero-stage">
+            <div class="stage-ring" aria-hidden="true"></div>
+            <img id="card-img" src="" alt="Agente" />
+            <div id="custom-silhouette" class="custom-silhouette hidden">
+              <span id="custom-sil-code">#07</span>
+              <small>AGENT_ID</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secção Tática Inferior (Cartões Glassmorphism Limpos e Sem Sobreposição) -->
+        <div class="dossier-deck">
+
+          <!-- Bloco 1: Atributos Segmentados -->
+          <div class="glass-panel">
+            <div class="glass-panel-header">
+              <span>COMBAT_METRICS</span>
+              <span class="panel-hex">SYS // MAX_07</span>
+            </div>
+            <div class="stat-bars-list">
+              <div class="seg-row">
+                <span class="seg-label">HP</span>
+                <div class="seg-track" id="bar-hp"></div>
+                <span class="seg-val" id="val-hp">5/7</span>
+              </div>
+              <div class="seg-row">
+                <span class="seg-label">ATK</span>
+                <div class="seg-track" id="bar-atk"></div>
+                <span class="seg-val" id="val-atk">5/7</span>
+              </div>
+              <div class="seg-row">
+                <span class="seg-label">DEF</span>
+                <div class="seg-track" id="bar-def"></div>
+                <span class="seg-val" id="val-def">4/7</span>
+              </div>
+              <div class="seg-row">
+                <span class="seg-label">SPD</span>
+                <div class="seg-track" id="bar-spd"></div>
+                <span class="seg-val" id="val-spd">7/7</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bloco 2: Habilidade Especial -->
+          <div class="glass-panel ability-panel">
+            <div class="ability-accent-bar"></div>
+            <div class="ability-content">
+              <div class="ability-top-row">
+                <span class="ability-heading">SPECIAL ABILITY</span>
+                <span class="ability-tag">ACTIVE</span>
+              </div>
+              <div id="card-ability-name" class="ability-name">CARNAVAL BEAT</div>
+              <p id="card-ability-desc" class="ability-desc">
+                BONUS ENERGY AND SPEED WITH AN UPBEAT SONG!
+              </p>
+            </div>
+          </div>
+
+          <!-- Bloco 3: 3 Emblemas Temáticos -->
+          <div class="emblem-row" id="card-emblems"></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
